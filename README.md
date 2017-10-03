@@ -2,7 +2,7 @@
 This repo contains docker-compose files to start the distribrewed stack.
 
 ### Requirements
-To start the stack you have to install [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/)
+To start the stack you have to install [docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/).
 
 ### Default port mapping
 
@@ -34,9 +34,13 @@ docker-compose up -d
 sudo rm -r data
 ```
 
+### Changing default passwords
+
+Edit `.env` file to change default passwords.
+
 ### Starting the telegram worker
 
-Edit `./telegram/.env` and set telegram token and chat id
+Edit `./telegram/.env` and set telegram token and chat id.
 
 ```bash
 cd telegram
