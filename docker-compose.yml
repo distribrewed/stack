@@ -2,33 +2,29 @@ version: "2"
 services:
   api:
     image: distribrewed/master:api-x64
-    networks:
-      - distribrewed_network
+    network_mode: host
     environment:
-      AMQP_HOST: rabbitmq
+      AMQP_HOST: localhost
       AMQP_PORT: "5672"
       AMQP_USER: ${AMQP_USER}
       AMQP_PASS: ${AMQP_PASS}
       AMQP_VHOST: ${AMQP_VHOST}
-      DB_HOST: postgres
+      DB_HOST: localhost
       DB_PORT: "5432"
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
-    ports:
-      - "8000:8000"
     restart: always
   queue:
     image: distribrewed/master:queue-x64
-    networks:
-      - distribrewed_network
+    network_mode: host
     environment:
-      AMQP_HOST: rabbitmq
+      AMQP_HOST: localhost
       AMQP_PORT: "5672"
       AMQP_USER: ${AMQP_USER}
       AMQP_PASS: ${AMQP_PASS}
       AMQP_VHOST: ${AMQP_VHOST}
-      DB_HOST: postgres
+      DB_HOST: localhost
       DB_PORT: "5432"
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
@@ -36,8 +32,7 @@ services:
     restart: always
   postgres:
     image: distribrewed/postgres:x64
-    networks:
-      - distribrewed_network
+    network_mode: host
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -47,43 +42,27 @@ services:
       - "./data/postgres:/var/lib/postgresql/data"
   rabbitmq:
     image: rabbitmq:3-management-alpine
-    networks:
-      - distribrewed_network
+    network_mode: host
     environment:
       RABBITMQ_DEFAULT_USER: ${AMQP_USER}
       RABBITMQ_DEFAULT_PASS: ${AMQP_PASS}
       RABBITMQ_DEFAULT_VHOST: ${AMQP_VHOST}
-    ports:
-      - "5672:5672"
-      - "8100:15672"
     restart: always
   prometheus:
     image: distribrewed/prometheus:x64
-    networks:
-      - distribrewed_network
-    ports:
-      - "9090:9090"
+    network_mode: host
     restart: always
     volumes:
       - "./data/prometheus:/prometheus/data"
   consul:
     image: consul
-    networks:
-      - distribrewed_network
+    network_mode: host
     environment:
       CONSUL_LOCAL_CONFIG: '{"datacenter": "distribrewed"}'
-    ports:
-      - "8500:8500"
     restart: always
   grafana:
     image: grafana/grafana
-    networks:
-      - distribrewed_network
-    ports:
-      - "3000:3000"
+    network_mode: host
     restart: always
     volumes:
       - "./data/grafana:/var/lib/grafana"
-
-networks:
-  distribrewed_network:

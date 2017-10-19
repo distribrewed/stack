@@ -2,17 +2,13 @@ version: "2"
 services:
   telegram:
     image: distribrewed/workers:x64
-    networks:
-      - stack_distribrewed_network
+    network_mode: host
     env_file:
       - ../.env
     environment:
-      AMQP_HOST: rabbitmq
+      AMQP_HOST: localhost
       WORKER_NAME: telegram
       WORKER_PLUGIN_CLASS: TelegramWorker
       TELEGRAM_CHAT: ${TELEGRAM_CHAT}
       TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
     restart: always
-networks:
-  stack_distribrewed_network:
-    external: true
